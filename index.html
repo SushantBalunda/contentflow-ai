@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ContentFlow AI - Transform YouTube videos into SEO-friendly blog posts, Twitter threads, and LinkedIn summaries">
+    <title>ContentFlow AI - Video to Content Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo">
+                <h1>ContentFlow AI</h1>
+                <p class="tagline">Transform Videos into Multi-Platform Content</p>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Input Section -->
+            <section class="input-section" id="inputSection">
+                <h2>Enter YouTube Video URL</h2>
+                <p class="instruction">Paste a YouTube video URL to generate blog posts, Twitter threads, and LinkedIn summaries</p>
+                
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="videoUrl" 
+                        class="url-input" 
+                        placeholder="https://www.youtube.com/watch?v=..." 
+                        aria-label="YouTube video URL"
+                    >
+                    <button id="submitBtn" class="btn btn-primary">Generate Content</button>
+                </div>
+                
+                <div id="errorMessage" class="error-message" role="alert"></div>
+                
+                <!-- Example URLs -->
+                <div class="examples">
+                    <p class="examples-label">Try an example:</p>
+                    <button class="example-btn" data-url="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Tech Tutorial</button>
+                    <button class="example-btn" data-url="https://www.youtube.com/watch?v=jNQXAC9IVRw">Product Review</button>
+                </div>
+            </section>
+
+            <!-- Processing Status Section -->
+            <section class="processing-section hidden" id="processingSection">
+                <div class="processing-card">
+                    <div class="processing-icon">
+                        <div class="spinner"></div>
+                    </div>
+                    <h3 id="processingTitle">Processing Video...</h3>
+                    <p id="processingMessage" class="processing-message">Validating YouTube URL</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">0%</p>
+                    
+                    <!-- Cancel Button -->
+                    <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section hidden" id="resultsSection">
+                
+                <!-- Success Message -->
+                <div class="success-banner">
+                    <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <div>
+                        <h3>Content Generated Successfully!</h3>
+                        <p>Your content is ready for publishing across platforms</p>
+                    </div>
+                </div>
+
+                <!-- Content Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="blog">Blog Post</button>
+                    <button class="tab-btn" data-tab="twitter">Twitter Thread</button>
+                    <button class="tab-btn" data-tab="linkedin">LinkedIn Summary</button>
+                </div>
+
+                <!-- Blog Post Content -->
+                <div class="content-panel active" id="blogPanel">
+                    <div class="content-header">
+                        <h3>SEO-Optimized Blog Post</h3>
+                        <div class="content-actions">
+                            <button class="btn btn-icon" id="editBlogBtn" title="Edit content">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-icon" id="copyBlogBtn" title="Copy to clipboard">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-icon" id="downloadBlogBtn" title="Download as text">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div id="blogContent" contenteditable="false" class="editable-content"></div>
+                    </div>
+                    <div class="content-meta">
+                        <span id="blogWordCount">Word Count: 0</span>
+                        <span id="blogReadTime">Read Time: 0 min</span>
+                    </div>
+                </div>
+
+                <!-- Twitter Thread Content -->
+                <div class="content-panel" id="twitterPanel">
+                    <div class="content-header">
+                        <h3>Twitter Thread</h3>
+                        <div class="content-actions">
+                            <button class="btn btn-icon" id="editTwitterBtn" title="Edit content">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-icon" id="copyTwitterBtn" title="Copy to clipboard">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-icon" id="downloadTwitterBtn" title="Download as text">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div id="twitterContent" class="twitter-thread"></div>
+                    </div>
+                    <div class="content-meta">
+                        <span id="twitterCount">Total Tweets: 0</span>
+                    </div>
+                </div>
+
+                <!-- LinkedIn Summary Content -->
+                <div class="content-panel" id="linkedinPanel">
+                    <div class="content-header">
+                        <h3>LinkedIn Professional Summary</h3>
+                        <div class="content-actions">
+                            <button class="btn btn-icon" id="editLinkedinBtn" title="Edit content">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-icon" id="copyLinkedinBtn" title="Copy to clipboard">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-icon" id="downloadLinkedinBtn" title="Download as text">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div id="linkedinContent" contenteditable="false" class="editable-content"></div>
+                    </div>
+                    <div class="content-meta">
+                        <span id="linkedinWordCount">Word Count: 0</span>
+                    </div>
+                </div>
+
+                <!-- Generate New Button -->
+                <div class="action-footer">
+                    <button id="newVideoBtn" class="btn btn-primary">Generate from New Video</button>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 ContentFlow AI. Powered by AWS AI Services.</p>
+        </footer>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
